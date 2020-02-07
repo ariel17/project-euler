@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -10,17 +11,71 @@ const (
 	// limit = int64(1000)
 )
 
+type message struct {
+	Min int64
+	Max int64
+}
+
 func main() {
-	primes := []int64{}
-	for i := int64(0); i <= limit; i++ {
-		if isPrime(primes, i) {
-			primes = append(primes, i)
+	divSet := map[int64]struct{}{}
+	start := int64(2)
+	min := int64(math.MaxInt64)
+	fmt.Printf("Searching divisors from %d to %d (all divisors for %d)\n", start, limit/2, limit)
+	for i := int64(2); i <= limit/2; i++ {
+		if limit%i == 0 {
+			if i < min {
+				min = i
+			}
+			div := limit / i
+			divSet[i], divSet[div] = struct{}{}, struct{}{}
+			fmt.Printf(">> Adding divisors: %d, %d | (min: %d)\n", i, div, min)
+			if div == min {
+				break
+			}
 		}
 	}
 
-	gpd := greatestPrimeDivisor(primes, limit)
-	fmt.Printf("Primes: %v", primes)
-	fmt.Printf("Result: %d", gpd)
+	div := []int64{}
+	for k := range divSet {
+		div = append(div, k)
+	}
+	fmt.Printf("Found divisors: %d total\nSearching prime divisors...\n", len(div))
+
+	var max int64
+	for _, d := range div {
+		if checkPrime(d) && d > max {
+			max = d
+			fmt.Printf("Max prime divisor at the moment: %d\n", max)
+		}
+	}
+
+	fmt.Printf("Result: %d\n", max)
+}
+
+func checkPrime(n int64) bool {
+	if n == 0 || n == 1 {
+		return false
+	}
+	v := fmt.Sprintf("%d", n)
+	var digitSum int64
+	for _, d := range v {
+		digit, err := strconv.ParseInt(string(d), 10, 64)
+		if err != nil {
+			panic(err)
+		}
+		digitSum += digit
+	}
+	if digitSum%3 == 0 {
+		return false
+	}
+	var isDivisible bool
+	for i := int64(2); i < n; i++ {
+		if n%i == 0 {
+			isDivisible = true
+			break
+		}
+	}
+	return !isDivisible
 }
 
 func isPrime(primes []int64, n int64) bool {
