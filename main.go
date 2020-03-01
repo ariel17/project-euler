@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"sort"
 
-	"./problem1"
-	"./problem2"
-	"./problem3"
+	"github.com/ariel17/project-euler/problem1"
+	"github.com/ariel17/project-euler/problem2"
+	"github.com/ariel17/project-euler/problem3"
+	"github.com/ariel17/project-euler/problem4"
 )
 
 var (
@@ -15,6 +16,7 @@ var (
 		1: problem1.Solve,
 		2: problem2.Solve,
 		3: problem3.Solve,
+		4: problem4.Solve,
 	}
 )
 

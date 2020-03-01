@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"../tools"
+	"github.com/ariel17/project-euler/tools"
 )
 
 const (
