@@ -1,9 +1,10 @@
-package main
+package problem3
 
 import (
 	"fmt"
 	"math"
-	"strconv"
+
+	"../tools"
 )
 
 const (
@@ -16,7 +17,10 @@ type message struct {
 	Max int64
 }
 
-func main() {
+// Solve Largest prime factor
+// The prime factors of 13195 are 5, 7, 13 and 29.
+// What is the largest prime factor of the number 600851475143 ?
+func Solve() {
 	divSet := map[int64]struct{}{}
 	start := int64(2)
 	min := int64(math.MaxInt64)
@@ -43,59 +47,13 @@ func main() {
 
 	var max int64
 	for _, d := range div {
-		if checkPrime(d) && d > max {
+		if tools.IsPrime(d) && d > max {
 			max = d
 			fmt.Printf("Max prime divisor at the moment: %d\n", max)
 		}
 	}
 
 	fmt.Printf("Result: %d\n", max)
-}
-
-func checkPrime(n int64) bool {
-	if n == 0 || n == 1 {
-		return false
-	}
-	v := fmt.Sprintf("%d", n)
-	var digitSum int64
-	for _, d := range v {
-		digit, err := strconv.ParseInt(string(d), 10, 64)
-		if err != nil {
-			panic(err)
-		}
-		digitSum += digit
-	}
-	if digitSum%3 == 0 {
-		return false
-	}
-	var isDivisible bool
-	for i := int64(2); i < n; i++ {
-		if n%i == 0 {
-			isDivisible = true
-			break
-		}
-	}
-	return !isDivisible
-}
-
-func isPrime(primes []int64, n int64) bool {
-	if n == 0 || n == 1 {
-		return false
-	}
-	v := fmt.Sprintf("%d", n)
-	var digitSum int64
-	for _, d := range v {
-		digit, err := strconv.ParseInt(string(d), 10, 64)
-		if err != nil {
-			panic(err)
-		}
-		digitSum += digit
-	}
-	if digitSum%3 == 0 {
-		return false
-	}
-
-	return greatestPrimeDivisor(primes, n) == 0
 }
 
 // greatestPrimeDivisor returns the greatest prime number that divides n; if
@@ -126,5 +84,4 @@ func greatestPrimeDivisor(primes []int64, n int64) int64 {
 		}
 	}
 	return greatest
-
 }
