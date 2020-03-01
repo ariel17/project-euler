@@ -27,6 +27,7 @@ tags
 *.dll
 *.so
 *.dylib
+project-euler
 
 # Test binary, build with `go test -c`
 *.test
